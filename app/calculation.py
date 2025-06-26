@@ -66,7 +66,10 @@ class Calculation:
                 if x >= 0 and y != 0 
                 else self._raise_invalid_root(x, y)
             ),
-            "Modulus": lambda x, y: x % y if y != 0 else self._raise_div_zero()
+            "Modulus": lambda x, y: x % y if y != 0 else self._raise_div_zero(),
+            "IntDivision": lambda x, y: x // y if y != 0 else self._raise_div_zero(),
+            "Percentage": lambda x, y: (x / y) * 100 if y != 0 else self._raise_div_zero(),
+            "AbsDifference": lambda x, y: abs(x - y)
         }
 
         # Retrieve the operation function based on the operation name
@@ -77,9 +80,9 @@ class Calculation:
         try:
             # Execute the operation with the provided operands
             return op(self.operand1, self.operand2)
-        except (InvalidOperation, ValueError, ArithmeticError) as e: # pragma: no cover
+        except (InvalidOperation, ValueError, ArithmeticError) as e: 
             # Handle any errors that occur during calculation
-            raise OperationError(f"Calculation failed: {str(e)}")
+            raise OperationError(f"Calculation failed: {str(e)}") # pragma: no cover
 
     @staticmethod
     def _raise_div_zero():  # pragma: no cover

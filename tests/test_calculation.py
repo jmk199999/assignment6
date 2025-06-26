@@ -61,6 +61,31 @@ def test_modulus_by_zero():
         Calculation(operation="Modulus", operand1=Decimal("8"), operand2=Decimal("0"))
 
 
+def test_intdivision():
+    calc = Calculation(operation="IntDivision", operand1=Decimal("9"), operand2=Decimal("2"))
+    assert calc.result == Decimal("4")
+
+
+def test_intdivision_by_zero():
+    with pytest.raises(OperationError, match="Division by zero is not allowed"):
+        Calculation(operation="IntDivision", operand1=Decimal("8"), operand2=Decimal("0"))
+
+
+def test_percent():
+    calc = Calculation(operation="Percentage", operand1=Decimal("9"), operand2=Decimal("2"))
+    assert calc.result == Decimal("450")
+
+
+def test_percent_of_zero():
+    with pytest.raises(OperationError, match="Division by zero is not allowed"):
+        Calculation(operation="Percentage", operand1=Decimal("8"), operand2=Decimal("0"))
+
+
+def test_absdifference():
+    calc = Calculation(operation="AbsDifference", operand1=Decimal("5"), operand2=Decimal("13"))
+    assert calc.result == Decimal("8")
+
+
 def test_unknown_operation():
     with pytest.raises(OperationError, match="Unknown operation"):
         Calculation(operation="Unknown", operand1=Decimal("5"), operand2=Decimal("3"))
@@ -142,14 +167,6 @@ def test_from_dict_result_mismatch(caplog):
 
     # Assert
     assert "Loaded calculation result 10 differs from computed result 5" in caplog.text
-
-
-def test_str():
-    """ 
-    Test that the __str__ method properly formats the string.
-    """
-    calc = Calculation(operation="Modulus", operand1=Decimal("18"), operand2=Decimal("5"))
-    assert str(calc) == "Modulus(18, 5) = 3"
 
 
 def test_str():
