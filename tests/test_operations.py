@@ -12,6 +12,7 @@ from app.operations import (
     Power,
     Root,
     Modulus,
+    IntDivision,
     OperationFactory,
 )
 
@@ -192,6 +193,29 @@ class TestModulus(BaseOperationTest):
         "negative_numbers": {"a": "-6", "b": "-4", "expected": "-2"},
         "mixed_signs": {"a": "-6", "b": "2", "expected": "0"},
         "decimals": {"a": "5.5", "b": "2", "expected": "1.5"},
+        "divide_zero": {"a": "0", "b": "5", "expected": "0"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Division by zero is not allowed"
+        },
+    }
+
+
+class TestIntDivision(BaseOperationTest):
+    """Test Division operation."""
+
+    operation_class = IntDivision
+    valid_test_cases = {
+        "positive_numbers": {"a": "6", "b": "2", "expected": "3"},
+        "negative_numbers": {"a": "-6", "b": "-4", "expected": "1"},
+        "mixed_signs": {"a": "-6", "b": "2", "expected": "-3"},
+        "positive_decimals": {"a": "5.5", "b": "2", "expected": "2"},
+        "negative_decimals": {"a": "-5.5", "b": "-2", "expected": "2"},
+        "mixed_decimals": {"a": "-5.5", "b": "2", "expected": "-2"},
         "divide_zero": {"a": "0", "b": "5", "expected": "0"},
     }
     invalid_test_cases = {
