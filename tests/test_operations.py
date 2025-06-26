@@ -13,6 +13,7 @@ from app.operations import (
     Root,
     Modulus,
     IntDivision,
+    Percentage,
     OperationFactory,
 )
 
@@ -206,7 +207,7 @@ class TestModulus(BaseOperationTest):
 
 
 class TestIntDivision(BaseOperationTest):
-    """Test Division operation."""
+    """Test Integer Division operation."""
 
     operation_class = IntDivision
     valid_test_cases = {
@@ -228,7 +229,27 @@ class TestIntDivision(BaseOperationTest):
     }
 
 
-class TestOperationFactory:
+class TestPercentage(BaseOperationTest):
+    """Test Percentage operation."""
+
+    operation_class = Percentage
+    valid_test_cases = {
+        "positive_numbers": {"a": "3", "b": "6", "expected": "50"},
+        "negative_numbers": {"a": "-3", "b": "-8", "expected": "37.5"},
+        "mixed_signs": {"a": "-14", "b": "8", "expected": "-175"},
+        "decimals": {"a": "3.6", "b": "9.6", "expected": "37.5"},
+        "divide_zero": {"a": "0", "b": "5", "expected": "0"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Division by zero is not allowed"
+        },
+    }
+
+
     """Test OperationFactory functionality."""
 
     def test_create_valid_operations(self):

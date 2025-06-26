@@ -314,7 +314,7 @@ class IntDivision(Operation):
 
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
         """
-        Divide one number by another.
+        Divide one number by another and return the integer quotient.
 
         Args:
             a (Decimal): Dividend.
@@ -325,6 +325,45 @@ class IntDivision(Operation):
         """
         self.validate_operands(a, b)
         return a // b
+
+
+class Percentage(Operation):
+    """
+    Percentage operation implementation.
+
+    Calculates the percentage of the first number with respect to the second.
+    """
+
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands, checking for division by zero.
+
+        Overrides the base class method to ensure that the divisor is not zero.
+
+        Args:
+            a (Decimal): Dividend.
+            b (Decimal): Divisor.
+
+        Raises:
+            ValidationError: If the divisor is zero.
+        """
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Division by zero is not allowed")
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Return the percentage of one number of another.
+
+        Args:
+            a (Decimal): Dividend.
+            b (Decimal): Divisor.
+
+        Returns:
+            Decimal: The Dividend's percentage of the Divisor.
+        """
+        self.validate_operands(a, b)
+        return (a / b) * 100
 
 
 class OperationFactory:
@@ -345,7 +384,8 @@ class OperationFactory:
         'power': Power,
         'root': Root,
         'modulus': Modulus,
-        'int_divide': IntDivision
+        'int_divide': IntDivision,
+        'percentage': Percentage
     }
 
     @classmethod
