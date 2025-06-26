@@ -366,6 +366,28 @@ class Percentage(Operation):
         return (a / b) * 100
 
 
+class AbsDifference(Operation):
+    """
+    Absolute Difference operation implementation.
+
+    Performs the subtraction of one number from another and returns the absolute value.
+    """
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Subtract one number from another and return the absolute difference.
+
+        Args:
+            a (Decimal): First operand.
+            b (Decimal): Second operand.
+
+        Returns:
+            Decimal: Absolute difference between the two operands.
+        """
+        self.validate_operands(a, b)
+        return abs(a - b)
+
+
 class OperationFactory:
     """
     Factory class for creating operation instances.
@@ -385,7 +407,8 @@ class OperationFactory:
         'root': Root,
         'modulus': Modulus,
         'int_divide': IntDivision,
-        'percentage': Percentage
+        'percent': Percentage,
+        'abs_diff': AbsDifference,
     }
 
     @classmethod
