@@ -1,0 +1,77 @@
+# Test REPL Commands (using patches for input/output handling)
+
+from unittest.mock import patch
+
+from app.calculator_repl import calculator_repl
+
+
+@patch('builtins.input', side_effect=['exit'])
+@patch('builtins.print')
+def test_calculator_repl_exit(mock_print, mock_input):
+        calculator_repl()
+        mock_print.assert_any_call("Goodbye!")
+
+
+@patch('builtins.input', side_effect=['help', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_help(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("\nAvailable commands:")
+
+
+@patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_addition(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("\nResult: 5")
+
+
+@patch('builtins.input', side_effect=['subtract', '10', '5', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_subtraction(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("\nResult: 5")
+
+@patch('builtins.input', side_effect=['add', 'cancel', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_cancel_first_number(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Operation cancelled")
+
+@patch('builtins.input', side_effect=['add', '5', 'cancel', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_cancel_second_number(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Operation cancelled")
+
+@patch('builtins.input', side_effect=['add', '5', 'two', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_validation_error(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Error: Invalid number format: two")
+
+@patch('builtins.input', side_effect=['subtract', '5', '5', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_unexpected_error(mock_print, mock_input):
+    with patch('app.calculator.Calculator.perform_operation') as mock_perform_oper:
+        simulated_error_message = "Simulated disk full error during load."
+        mock_perform_oper.side_effect = IOError(simulated_error_message)
+        calculator_repl()
+        #mock_perform_oper.assert_called_once()
+        mock_print.assert_any_call("Unexpected error: Simulated disk full error during load.")
+
+@patch('builtins.input', side_effect=['and', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_unknown_command(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Unknown command: 'and'. Type 'help' for available commands.")
+
+@patch('builtins.input', side_effect=['subtract', '5', '5', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_interrupt(mock_print, mock_input):
+    with patch('app.calculator.Calculator.perform_operation') as mock_perform_oper:
+        mock_perform_oper.side_effect = KeyboardInterrupt()
+        calculator_repl()
+        #mock_perform_oper.assert_called_once()
+        mock_print.assert_any_call("\nOperation cancelled")
+
