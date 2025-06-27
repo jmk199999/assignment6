@@ -160,6 +160,7 @@ class Calculator:
             )
 
             return result
+#            return calculation.format_result(self.config.precision)
 
         except ValidationError as e:
             # Log and re-raise validation errors
