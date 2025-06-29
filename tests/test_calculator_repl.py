@@ -2,14 +2,79 @@
 
 from unittest.mock import patch
 
-from app.calculator_repl import calculator_repl, NORMAL_TEXT, NUMBER1_TEXT, NUMBER2_TEXT, NUMBER3_TEXT
+from app.calculator_repl import COMMAND_TEXT, ERROR_TEXT, WARNING_TEXT, calculator_repl, NORMAL_TEXT, NUMBER1_TEXT, NUMBER2_TEXT, NUMBER3_TEXT
 
 
 @patch('builtins.input', side_effect=['exit'])
 @patch('builtins.print')
 def test_calculator_repl_exit(mock_print, mock_input):
+    with patch('app.calculator.Calculator.save_history') as mock_save_history:
         calculator_repl()
+        mock_save_history.assert_called_once()
+        mock_print.assert_any_call("History saved successfully.")
         mock_print.assert_any_call(NORMAL_TEXT+"Goodbye!")
+
+@patch('builtins.input', side_effect=['exit'])
+@patch('builtins.print')
+def test_calculator_repl_exit_history_failure(mock_print, mock_input):
+    with patch('app.calculator.Calculator.save_history') as mock_save_history:
+        simulated_error_message = "Simulated disk full error during save."
+        mock_save_history.side_effect = IOError(simulated_error_message)
+        calculator_repl()
+        mock_save_history.assert_called_once()
+        mock_print.assert_any_call(WARNING_TEXT+ f"Warning: Could not save history: Simulated disk full error during save.")
+
+@patch('builtins.input', side_effect=['clear', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_clear(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("History cleared")
+
+@patch('builtins.input', side_effect=['history', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_no_history(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("No calculations in history")
+
+@patch('builtins.input', side_effect=['add', '2', '3', 'history', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_history(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Calculation History:")
+
+@patch('builtins.input', side_effect=['save', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_save(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("History saved successfully")
+
+@patch('builtins.input', side_effect=['save', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_save_history_failure(mock_print, mock_input):
+    with patch('app.calculator.Calculator.save_history') as mock_save_history:
+        simulated_error_message = "Simulated disk full error during save."
+        mock_save_history.side_effect = IOError(simulated_error_message)
+        calculator_repl()
+        #mock_save_history.assert_called_once()
+        mock_print.assert_any_call(WARNING_TEXT+ f"Warning: Could not save history: Simulated disk full error during save.")
+
+
+@patch('builtins.input', side_effect=['load', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_load(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("History loaded successfully")
+
+
+@patch('builtins.input', side_effect=['load', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_load_history_failure(mock_print, mock_input):
+    with patch('app.calculator.Calculator.load_history') as mock_load_history:
+        simulated_error_message = "Simulated disk full error during load."
+        mock_load_history.side_effect = IOError(simulated_error_message)
+        calculator_repl()
+        #mock_load_history.assert_called_once()
+        mock_print.assert_any_call(ERROR_TEXT+ "Error loading history: Simulated disk full error during load.")
 
 
 @patch('builtins.input', side_effect=['help', 'exit'])
@@ -105,7 +170,7 @@ def test_calculator_repl_cancel_second_number(mock_print, mock_input):
 @patch('builtins.print')
 def test_calculator_repl_validation_error(mock_print, mock_input):
     calculator_repl()
-    mock_print.assert_any_call("Error: Invalid number format: two")
+    mock_print.assert_any_call(ERROR_TEXT+"Error: Invalid number format: two")
 
 @patch('builtins.input', side_effect=['subtract', '5', '5', 'exit'])
 @patch('builtins.print')
@@ -121,7 +186,7 @@ def test_calculator_repl_unexpected_error(mock_print, mock_input):
 @patch('builtins.print')
 def test_calculator_repl_unknown_command(mock_print, mock_input):
     calculator_repl()
-    mock_print.assert_any_call("Unknown command: 'and'. Type 'help' for available commands.")
+    mock_print.assert_any_call(ERROR_TEXT+"Unknown command"+NORMAL_TEXT+": 'and'.  Type '"+COMMAND_TEXT+"help"+NORMAL_TEXT+"' for available commands.")
 
 @patch('builtins.input', side_effect=['subtract', '5', '5', 'exit'])
 @patch('builtins.print')
