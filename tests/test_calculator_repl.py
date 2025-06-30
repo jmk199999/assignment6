@@ -36,6 +36,30 @@ def test_calculator_repl_no_history(mock_print, mock_input):
     calculator_repl()
     mock_print.assert_any_call("No calculations in history")
 
+@patch('builtins.input', side_effect=['undo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_no_undo(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Nothing to undo")
+
+@patch('builtins.input', side_effect=['redo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_no_redo(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Nothing to redo")
+
+@patch('builtins.input', side_effect=['multiply', '10', '5', 'undo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_undo(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Operation undone")
+
+@patch('builtins.input', side_effect=['divide', '10', '5', 'undo', 'redo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_redo(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Operation redone")
+
 @patch('builtins.input', side_effect=['add', '2', '3', 'history', 'exit'])
 @patch('builtins.print')
 def test_calculator_repl_history(mock_print, mock_input):

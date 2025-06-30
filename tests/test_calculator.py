@@ -7,6 +7,7 @@ from decimal import Decimal
 from tempfile import TemporaryDirectory
 from app.calculator import Calculator
 from app.calculator_config import CalculatorConfig
+from app.calculator_memento import CalculatorMemento
 from app.exceptions import OperationError, ValidationError
 from app.history import LoggingObserver
 from app.operations import OperationFactory
@@ -223,3 +224,20 @@ def test_get_df():
     df = calc.get_history_dataframe()
     assert df is not None
     assert isinstance(df, pd.DataFrame)
+
+# Test Undo/Redo Functionality
+
+def test_undo(calculator):
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(2, 3)
+    calculator.undo()
+    assert calculator.history == []
+
+def test_redo(calculator):
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(2, 3)
+    calculator.undo()
+    calculator.redo()
+    assert len(calculator.history) == 1

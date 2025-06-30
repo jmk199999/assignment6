@@ -37,9 +37,6 @@ def calculator_repl():
 
         # Register observers for logging and auto-saving history
         calc.add_observer(LoggingObserver())
-#        print(f"Auto-save: {calc.config.auto_save}")
-#        if calc.config.auto_save:
-#            calc.add_observer(AutoSaveObserver(calc))
         calc.add_observer(AutoSaveObserver(calc))
 
         print(NORMAL_TEXT+ "Calculator started.  Type '" + COMMAND_TEXT + "help" + NORMAL_TEXT + "' for commands.")
@@ -67,8 +64,8 @@ def calculator_repl():
                     print("\n  Additional commands:")
                     print("    "+COMMAND_TEXT+"history   " + NORMAL_TEXT + " - Show calculation history")
                     print("    "+COMMAND_TEXT+"clear     " + NORMAL_TEXT + " - Clear calculation history")
-#                    print("    "+COMMAND_TEXT+"undo      " + NORMAL_TEXT + " - Undo the last calculation")
-#                    print("    "+COMMAND_TEXT+"redo      " + NORMAL_TEXT + " - Redo the last undone calculation")
+                    print("    "+COMMAND_TEXT+"undo      " + NORMAL_TEXT + " - Undo the last calculation")
+                    print("    "+COMMAND_TEXT+"redo      " + NORMAL_TEXT + " - Redo the last undone calculation")
                     print("    "+COMMAND_TEXT+"save      " + NORMAL_TEXT + " - Save calculation history to file")
                     print("    "+COMMAND_TEXT+"load      " + NORMAL_TEXT + " - Load calculation history from file")
                     print("    "+COMMAND_TEXT+"help      " + NORMAL_TEXT + " - Displays this help information")
@@ -100,6 +97,22 @@ def calculator_repl():
                     # Clear calculation history
                     calc.clear_history()
                     print("History cleared")
+                    continue
+
+                if command == 'undo':
+                    # Undo the last calculation
+                    if calc.undo():
+                        print("Operation undone")
+                    else:
+                        print("Nothing to undo")
+                    continue
+
+                if command == 'redo':
+                    # Redo the last undone calculation
+                    if calc.redo():
+                        print("Operation redone")
+                    else:
+                        print("Nothing to redo")
                     continue
 
                 if command == 'save':
