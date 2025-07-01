@@ -77,6 +77,38 @@ touch .env
 python3 main.py
 ```
 
+Commands are entered at the `Enter command:` prompt.  There are two types of commands, **Operational commands** which perform mathematical operations and always ask 
+for two numbers to be entered before providing a result, and **Functional commands** which require no additional inputs and perform an application function.  Typing `cancel`
+when an operational command is prompting for a number will cancel that operation and return to the command prompt.
+
+**Acceptable Operational Commands:**
+
+| Command                  | Calculation performed          |
+|--------------------------|--------------------------------|
+| `add`                    | **Addition** of the two numbers.    |
+| `subtract`               | **Subtraction** of one number from the other. |
+| `multiply`               | **Multiplication** of the two numbers.   |
+| `divide`                 | **Division** of one number from the other. |  
+| `power`                  | **Exponentiation** of one number by the other. |
+| `root`                   | **Radication** of one number from the other. |
+| `modulus`                | Provides the **remainder** of dividing one number by the other. |
+| `int_divide`             | Provided the **integer quotient** of dividing one number by the other. |
+| `percent`                | **Percentage** of one number of the other. |
+| `abs_diff`               | Returns the **absolute difference** of the two numbers. Describes how "far apart" the two numbers are. |
+
+**Acceptable Functional Commands:**
+
+| Command                  | Calculation performed          |
+|--------------------------|--------------------------------|
+| `history`                | **Shows** the calculation history.    |
+| `clear`                  | **Clears** the calculation history. |
+| `undo`                   | **Undoes** the last calculation.  You can undo any calculation performed during this active session.   |
+| `redo`                   | **Redoes** the most recently undone calculation, up to any calculation undone during this session. |  
+| `save`    | Manually **saves** the calculation history.  The history is automatically saved when you exit the session or after every calculation is auto-save is on. |
+| `load`                   | **Load** the calculation history from file.  Effectively undoes all calculations since last save. |
+| `help`                   | Displays a **help** of available commands. |
+| `exit`                   | **Exits** the application gracefully. |
+
 ---
 
 # Testing Instructions
