@@ -98,13 +98,13 @@ when an operational command is prompting for a number will cancel that operation
 
 **Acceptable Functional Commands:**
 
-| Command                  | Calculation performed          |
+| Command                  | Action performed          |
 |--------------------------|--------------------------------|
 | `history`                | **Shows** the calculation history.    |
 | `clear`                  | **Clears** the calculation history. |
-| `undo`                   | **Undoes** the last calculation.  You can undo any calculation performed during this active session.   |
+| `undo`                   | **Undoes** the last calculation, up to the first calculation performed during this active session.   |
 | `redo`                   | **Redoes** the most recently undone calculation, up to any calculation undone during this session. |  
-| `save`    | Manually **saves** the calculation history.  The history is automatically saved when you exit the session or after every calculation is auto-save is on. |
+| `save`    | Manually **saves** the calculation history.  The history is automatically saved when you exit the session or after every calculation if auto-save is on. |
 | `load`                   | **Load** the calculation history from file.  Effectively undoes all calculations since last save. |
 | `help`                   | Displays a **help** of available commands. |
 | `exit`                   | **Exits** the application gracefully. |
