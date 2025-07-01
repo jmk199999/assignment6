@@ -71,9 +71,41 @@ touch .env
 
 # Usage Guide
 
+> Run Calculator Application
+
+```bash
+python3 main.py
+```
+
 ---
 
 # Testing Instructions
+
+## To run full suite of tests.
+
+```bash
+pytest
+```
+
+## To run individual test files.
+
+```bash
+pytest tests/<test_file.py>
+```
+
+**Individual Test Files Available**
+
+| Test File Name            | What it Tests                        |
+|---------------------------|---------------------------------------|
+| `test_calculation.py`     | The `Calculation` object, which encapsulates the details of a single mathematical operation. | 
+| `test_calculator_repl.py` | The `calculator_repl` function, which runs the **Read-Eval-Print Loop** that handles the command line. |
+| `test_calculator.py`      | The `Calculator` object, which is the core of the calculator application. |
+| `test_config.py`          | The `CalculatorConfig` object, which manages the configuration parameters. |
+| `test_exceptions.py`      | The base `CalculatorError` exception, and the custom exceptions `OperationError`, `ValidationError` and `ConfigurationError` |
+| `test_history.py`         | The `LoggingObserver` object, which logs calculations and the `AutoSaveObserver`, which auto-saves the calculation history. | 
+| `test_memento.py`         | The `CalculatorMemento` object, which manages calculation history for undo and redo functions. |
+| `test_operations.py`      | The `OperationFactory` object and all creatable `Operation` objects, which implements each of the mathematical operations. |
+| `test_validators.py`      | The `InputValidator` object, which validates the operands provided for each calculation. |
 
 ---
 
